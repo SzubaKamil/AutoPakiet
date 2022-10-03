@@ -1,0 +1,5 @@
+CREATE USER 'autoPakiet'@'localhost' IDENTIFIED BY 'autoPakiet';
+
+GRANT ALL PRIVILEGES ON * . * TO 'autoPakiet'@'localhost';
+
+ALTER USER 'autoPakiet'@'localhost' IDENTIFIED WITH mysql_native_password BY 'autopakiet21';

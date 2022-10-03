@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/general.html :: headfragment">
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3>DANE AUTA</h3>
+
+<table>
+    <tr align="left">
+        <th>Marka</th>
+        <th>Model</th>
+        <th>Rok produkcji</th>
+        <th>Rodzaj paliwa</th>
+        <th>Kod serwisowy</th>
+        <th>Ważność przeglądu</th>
+        <th>Ważność ubezpieczenia</th>
+    </tr>
+
+    <th:block th:each="car : ${cars}">
+        <tr align="left">
+            <th th:width="200" th:text="${car.producer}"></th>
+            <th th:width="200" th:text="${car.model}"></th>
+            <th th:width="200" th:text="${car.year}"></th>
+            <th th:width="200" th:text="${car.fuelType}"></th>
+            <th th:width="200" th:text="${car.serviceCode}"></th>
+
+            <th th:if="${car.getInspectionValidity () == 0}" th:width="200" >BRAK DANYCH</th>
+            <th th:if="${car.getInspectionValidity () != 0}" th:width="200" th:text="${car.getInspectionValidity ()} + ' dni'"></th>
+
+            <th th:if="${car.getInsuranceValidity () == 0}" th:width="200" >BRAK DANYCH</th>
+            <th th:if="${car.getInsuranceValidity () != 0}" th:width="200" th:text="${car.getInsuranceValidity()} + ' dni'"></th>
+
+            <th align="right">
+                <form action="#" th:action="@{'/carHistory?serviceCode={id}'(id=${car.serviceCode})}" th:method="post">
+                    <input class="btn btn-secondary" type="submit" value="Edytuj" style="min-width:100px;">
+                </form>
+            </th>
+            <th align="right">
+                <form action="#" th:action="@{'/sprzedarz/{id}/{confirmation}'(id=${car.id}, confirmation=${false})}" th:method="post">
+                    <input class="btn btn-warning" type="submit" value="Generuj kod sprzedaży " style="min-width:100px;">
+                </form>
+            </th>
+        </tr>
+    </th:block>
+</table>
+
+
+</body>
+</html>

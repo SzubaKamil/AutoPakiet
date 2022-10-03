@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/general.html :: headfragment">
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3>NOWA NAPRAWA SERWISOWA</h3>
+
+<form action="#" th:action="@{'/nowa_naprawa_serwisowa/result/{carId}'(carId=${carId})}"  modelAttribute="serviceRepair" th:method="post">
+    <select class="form-select width-250 form-control " th:field="*{serviceRepair.id}" style="min-width:150px;">
+        <option th:each="sR : ${serviceRepairs}"
+                th:value="${sR.id}"
+                th:text="${sR.name} + ' ' +  ${sR.price} + ' PLN'">
+        </option>
+    </select>
+
+    <input class="width-250 btn btn-success" type="submit" value="Dodaj nową naprawe"/>
+</form>
+
+</body>
+</html>

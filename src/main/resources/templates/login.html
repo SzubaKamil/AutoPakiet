@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/general.html :: headfragment">
+
+</head>
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h2>PANEL LOGOWANIA</h2>
+
+<div class="text-warning" th:if="${param.error}" >
+    Nieprawidłowa nazwa użytkownika lub hasło
+    <br><br>
+</div>
+
+<div class="text-success" th:if="${param.logout}">
+    Zostałeś pomyślnie wylogowany.
+    <br><br>
+</div>
+
+<form th:action="@{/login}" method="post">
+    <div >
+        <label> Nazwa użytkownika:</label> <br>
+        <input class="width-250 btn btn-secondary" type="text" name="username"/>
+    </div>
+    <div>
+        <label> Hasło:</label> <br>
+        <input class="width-250 btn btn-secondary" type="password" name="password"/>
+    </div>
+    <br>
+    <div><input class="width-250 btn btn-success" type="submit" value="Logowanie"/></div>
+</form>
+
+<br><br>
+
+</body>
+</html>

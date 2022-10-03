@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/general.html :: headfragment">
+
+</head>
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3>ZMIANA HASŁA</h3>
+
+<form th:action="@{/changePasswd}" modelAttribute="user">
+    <input class="btn btn-light width-250" type="text" placeholder="Nowe Hasło" th:field="*{user.password}" >
+    <br><br>
+    <input class="btn btn-light width-250" type="text" placeholder="Powtórz Haslo" th:field="*{user.passwordRepeat}" >
+    <br><br>
+    <input class="btn btn-success width-250" type="submit" value="Zmień hasło"/>
+</form>
+
+</body>
+</html>

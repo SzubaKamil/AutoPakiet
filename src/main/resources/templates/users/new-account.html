@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/general.html :: headfragment">
+
+</head>
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3 th:if="${user.authority == 'ROLE_SERWIS'}" >NOWE KONTO SERWIS</h3>
+<h3 th:if="${user.authority == 'ROLE_USER'}" >NOWY UŻYTKOWNIK</h3>
+
+<form th:action="@{/newAccount}" modelAttribute="user">
+
+    <input th:if="${user.authority == 'ROLE_SERWIS'}" class="btn btn-light width-250" type="text" placeholder="Nazwa firmy" th:field="*{user.name}" >
+    <input th:if="${user.authority == 'ROLE_USER'}" class="btn btn-light width-250" type="text" placeholder="Imie" th:field="*{user.name}" >
+
+    <br><br>
+    <input th:if="${user.authority == 'ROLE_SERWIS'}" class="btn btn-light width-250" type="text" placeholder="Nazwa firmy cd." th:field="*{user.surname}" >
+    <input th:if="${user.authority == 'ROLE_USER'}" class="btn btn-light width-250" type="text" placeholder="Nazwisko" th:field="*{user.surname}" >
+    <br><br>
+    <input class="btn btn-light width-250" type="text" placeholder="Login" th:field="*{user.username}" >
+    <br><br>
+    <input class="btn btn-light width-250" type="text" placeholder="E-mail" th:field="*{user.email}" >
+    <br><br>
+    <input class="btn btn-light width-250" type="text" placeholder="Hasło" th:field="*{user.password}" >
+    <br><br>
+    <input class="btn btn-light width-250" type="text" placeholder="Powtóz hasło" th:field="*{user.passwordRepeat}" >
+    <br><br>
+    <input class="btn btn-success width-250" type="submit" value="Dodaj"/>
+</form>
+
+</body>
+</html>

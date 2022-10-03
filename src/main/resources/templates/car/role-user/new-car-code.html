@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/general.html :: headfragment">
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3>WPROWADŹ KOD AUTA OTRZYMANY OD SPRZEDAJĄCEGO</h3>
+
+<form th:action="@{/dodaj_auto_kodem/nowe/}" modelAttribute="car">
+    <br>
+    <input class="btn btn-light width-250" type="text" placeholder="Kod sprzedaży" th:field="*{car.saleCode}" >
+    <br><br>
+    <input class="btn btn-success width-250" type="submit" value="Dodaj"/>
+</form>
+
+</body>
+</html>

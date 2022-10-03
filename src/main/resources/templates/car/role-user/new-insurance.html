@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/general.html :: headfragment">
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3>WPROWADŹ DANE POLISY UBEZPIECZENIOWEJ</h3>
+
+<form action="#" th:action="@{'/nowe_ubezpieczenie/nowe/{carId}'(carId=${carId})}" th:method="post" modelAttribute="insurance">
+    <label  class="form-label mt-4">Rodzaj ubezpieczenia:</label>
+    <select class="form-select width-250 form-control " th:field="*{insurance.type}">
+        <option th:each="tempInsurance : ${insuranceTypes}"
+                th:value="${tempInsurance}"
+                th:text="${tempInsurance}">
+        </option>
+    </select>
+
+    <br>
+    <label  class="form-label mt-4">Data podpisania umowy:</label>
+    <br>
+    <input class="btn btn-light width-250" type="date" placeholder="Producent opon" th:field="*{insurance.signDate}" >
+    <br><br>
+    <label  class="form-label mt-4">Data rozpoczęcia:</label>
+    <br>
+    <input class="btn btn-light width-250" type="date" placeholder="Producent opon" th:field="*{insurance.beginDate}" >
+    <br><br>
+    <label  class="form-label mt-4">Data zakończenia:</label>
+    <br>
+    <input class="btn btn-light width-250" type="date" placeholder="Producent opon" th:field="*{insurance.endDate}" >
+    <br><br>
+    <input class="btn btn-success width-250" type="submit" value="Dodaj"/>
+</form>
+
+</body>
+</html>

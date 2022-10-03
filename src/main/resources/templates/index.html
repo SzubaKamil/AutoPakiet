@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/general.html :: headfragment">
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<form action="/carHistory" modelAttribute="car">
+
+    <label  class="form-label mt-4">KOD SERWISOWY </label>
+    <br>
+    <input class="width-250 form-control" type="text" th:field="*{car.serviceCode}">
+    <br>
+    <input class="width-250 btn btn-success" type="submit" value="Sprawdź historie auta"/>
+</form>
+
+</body>
+</html>

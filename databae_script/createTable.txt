@@ -1,0 +1,156 @@
+DROP SCHEMA IF EXISTS `autoPakiet`;
+CREATE SCHEMA `autoPakiet` DEFAULT CHARACTER SET utf8 COLLATE utf8_polish_ci ;
+
+use `autoPakiet`;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+CREATE TABLE `users` (
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `name` varchar(100) NULL,
+  `surname` varchar(100) NULL,
+  `email` varchar(200) NULL,
+  PRIMARY KEY (`username`)
+)  ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+INSERT INTO `users` 
+VALUES 
+('user','{noop}user123',1,'user','',''),
+('serwis','{noop}serwis123',1,'serwis','',''),
+('admin','{noop}admin123',1,'admin','','');
+
+CREATE TABLE `authorities` (
+  `username` varchar(50) NOT NULL,
+  `authority` varchar(50) NOT NULL,
+  UNIQUE KEY `authorities_idx_1` (`username`,`authority`),
+  CONSTRAINT `authorities_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+) ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+INSERT INTO `authorities` 
+VALUES 
+('admin','ROLE_ADMIN'),
+('serwis','ROLE_SERWIS'),
+('user','ROLE_USER');
+
+CREATE TABLE `autoPakiet`.`tire` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `producer` VARCHAR(50) NULL,
+  `size` INT NULL,
+  `season` VARCHAR(20) NULL,
+  `car_id` INT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_CAR_idx` (`car_id`),
+  CONSTRAINT `FK_CAR` FOREIGN KEY (`car_id`) 
+  REFERENCES `car` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+CREATE TABLE `autoPakiet`.`service_repair` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(200) NULL,
+  `price` INT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+CREATE TABLE `autoPakiet`.`insurance` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(2) NULL,
+  `begin_date` DATE NULL,
+  `end_date` DATE NULL,
+  `sign_date` DATE NULL,
+  `car_id` INT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`car_id`) 
+  REFERENCES `car` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+CREATE TABLE `autoPakiet`.`car_mileage` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NULL,
+  `value` INT NULL,
+  `car_id` INT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`car_id`) 
+  REFERENCES `car` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+CREATE TABLE `autoPakiet`.`car_inspection` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `results` VARCHAR(10) NULL,
+  `expiration_date` DATE NULL,	
+  `car_mileage_id` INT NULL,	
+  `car_id` INT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_CAR_MILEAGE_idx` (`car_mileage_id`),
+  CONSTRAINT `FK_CAR_MILEAGE` FOREIGN KEY (`car_mileage_id`) 
+  REFERENCES `car_mileage` (`id`),
+  FOREIGN KEY (`car_id`) 
+  REFERENCES `car` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+CREATE TABLE `autoPakiet`.`car` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `producer` VARCHAR(100) NULL,
+  `model` VARCHAR(100) NULL,
+  `year` INT NULL,
+  `type` VARCHAR(100) NULL,
+  `service_code` INT NULL,
+  `sales_code` INT NULL,
+  `user_ID` varchar(50) NULL,
+  `active_tire_id` INT NULL,
+  `lpg_id` INT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_USER_idx` (`user_id`),
+  CONSTRAINT `FK_USER_ID` FOREIGN KEY (`user_id`) 
+  REFERENCES `users` (`username`),
+  KEY `FK_ACTIVE_TIRE_idx` (`active_tire_id`),
+  CONSTRAINT `FK_ACTIVE_TIRE` FOREIGN KEY (`active_tire_id`) 
+  REFERENCES `tire` (`id`),
+  KEY `FK_ACTIVE_LPG_idx` (`active_tire_id`),
+  CONSTRAINT `FK_LPG` FOREIGN KEY (`lpg_id`) 
+  REFERENCES `lpg` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+CREATE TABLE `autoPakiet`.`repair_history` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NULL,
+  `car_id` INT NULL,
+  `service_repair_id` INT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`car_id`) 
+  REFERENCES `car` (`id`),
+  KEY `FK_SERVICE_REPAIR_idx` (`service_repair_id`),
+  CONSTRAINT `FK_SERVICE_REPAIR` FOREIGN KEY (`service_repair_id`) 
+  REFERENCES `service_repair` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+
+CREATE TABLE `autoPakiet`.`lpg` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `installation_year` INT NULL,
+  `cylinder_validity` DATE NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_polish_ci;
+
+SET FOREIGN_KEY_CHECKS = 1;

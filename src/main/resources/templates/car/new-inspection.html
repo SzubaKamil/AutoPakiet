@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/general.html :: headfragment">
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3>NOWY PRZEGLĄD</h3>
+
+<form action="#" th:action="@{'/nowy_przeglad/result/{carId}'(carId=${carId})}"  modelAttribute="carInspection" th:method="post">
+
+    <select class="form-select width-250 form-control " th:field="*{carInspection.result}">
+        <option th:text="Pozytywny" th:value="Pozytywny"></option>
+        <option th:text="Negatywny" th:value="Negatywny"></option>
+    </select>
+
+    <input class="width-250 form-control" type="number" th:value="*{lastCarMileage}" th:min="*{lastCarMileage}"
+           th:field="*{carInspection.carMileage.value}">
+
+    <input class="width-250 btn btn-success" type="submit" value="Dodaj nowy przegląd"/>
+</form>
+
+</body>
+</html>

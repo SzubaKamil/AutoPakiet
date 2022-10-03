@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/general.html :: headfragment">
+
+</head>
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<h3>NOWE TYP NAPRAWY SERWISOWEJ</h3>
+
+<form th:action="@{/newServiceType}" modelAttribute="serviceRepair">
+    <br><br>
+    <input class="btn btn-light width-250" type="text" placeholder="Typ naprawy" th:field="*{serviceRepair.name}" >
+    <br><br>
+    <label>CENA</label>
+    <br>
+    <input class="btn btn-light width-250" type="text" placeholder="Cena" th:field="*{serviceRepair.price}" >
+    <br><br>
+    <input class="btn btn-success width-250" type="submit" value="Dodaj"/>
+</form>
+
+</body>
+</html>

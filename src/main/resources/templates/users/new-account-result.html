@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head th:replace="fragments/general.html :: headfragment">
+
+</head>
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<div th:if="*{result}">
+    <h2 class="text-success" th:text ="*{description}"></h2>
+</div>
+
+<div th:unless="*{result}">
+    <h2 class="text-warning" th:text="*{description}"></h2>
+</div>
+
+</body>
+</html>

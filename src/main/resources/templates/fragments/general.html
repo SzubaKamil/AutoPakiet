@@ -1,0 +1,178 @@
+<!DOCTYPE html>xm
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="headfragment">
+
+    <meta charset="UTF-8">
+    <title>Auto Pakiet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sandstone/bootstrap.min.css"
+          integrity="sha384-zEpdAL7W11eTKeoBJK1g79kgl9qjP7g84KfK3AZsuonx38n8ad+f5ZgXtoSDxPOh"
+          crossorigin="anonymous">
+
+    <style>
+        .width-250 {
+            width: 250px;
+        }
+    </style>
+    <style>
+        .hr {
+            background-color: blue;
+        }
+    </style>
+    <style>
+        form {
+            display: inline;
+        }
+    </style>
+    <style>
+        .inline {
+            display: inline;
+        }
+    </style>
+    <style>
+        .center {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div th:fragment="pageHeadByRole">
+
+    <hr class="hr">
+
+    <div class="center">
+
+        <div class="inline" sec:authorize="isAuthenticated()">
+
+            <div class="inline" sec:authorize="hasRole('ROLE_USER')">
+                <form th:if="${#httpServletRequest.requestURI != '/moje_auta/'}"
+                      action="#" th:action="@{/moje_auta/}">
+                    <input class="btn btn-success" type="submit" value="Moje auta"/>
+                </form>
+            </div>
+
+            <form th:if="${#httpServletRequest.requestURI != '/'}" th:action="@{/}" method="post">
+                <input class="btn btn-success" type="submit" value="Powrót do strony głownej"/>
+            </form>
+
+        </div>
+
+        <h2 class="inline">Auto Pakiet: baza informacji o autach </h2>
+
+        <!--    IF NOT LOG IN USER-->
+        <div sec:authorize="isAnonymous()" class="inline">
+
+            <a sec:authorize="isAnonymous()">
+                <a th:if="${#httpServletRequest.requestURI != '/login'}" class="btn btn-info" href="/login">Zaloguj</a>
+                <a th:if="${#httpServletRequest.requestURI != '/rejestracja'}" class="btn btn-info" href="/rejestracja">Rejestracja</a>
+            </a>
+            <form th:if="${#httpServletRequest.requestURI != '/'}" th:action="@{/}" method="post">
+                <input class="width-250 btn btn-success" type="submit" value="Powrót do strony głownej"/>
+
+            </form>
+        </div>
+
+        <div class="inline" sec:authorize="isAuthenticated()">
+
+            <form th:if="${#httpServletRequest.requestURI != '/zmiana_hasla'}" th:action="@{/zmiana_hasla}"
+                  method="post">
+                <input class="btn btn-success" type="submit" value="Zmiana Hasła"/>
+            </form>
+
+            <form th:action="@{/logout}" method="post">
+                <input class="btn btn-info" type="submit" value="Wyloguj"/>
+            </form>
+
+        </div>
+    </div>
+
+    <hr class="hr">
+    <h1 th:inline="text">Witaj [[${#httpServletRequest.remoteUser}]]!</h1>
+
+    <div class="inline" sec:authorize="isAuthenticated()">
+
+        <!--IF ADMIN PAGE HEAD ADMIN-->
+        <div class="inline" sec:authorize="hasRole('ROLE_ADMIN')">
+            <form th:if="${#httpServletRequest.requestURI != '/admin/nowe_konto_serwis'}"
+                  th:action="@{/admin/nowe_konto_serwis}" method="post">
+                <input class="width-250 btn btn-success" type="submit" value="Utwórz konto serwisanta"/>
+            </form>
+
+            <form th:if="${#httpServletRequest.requestURI != '/admin/nowy_typ_naprawy_serwisowej'}"
+                  th:action="@{/admin/nowy_typ_naprawy_serwisowej}" method="post">
+                <input class="width-250 btn btn-success" type="submit" value="Nowy typ naprawy serwisowej"/>
+            </form>
+        </div>
+
+        <!--IF USER PAGE HEAD USER-->
+        <div class="inline" sec:authorize="hasRole('ROLE_USER')">
+            <div th:if="${#httpServletRequest.requestURI == '/carHistory'}" class="inline">
+
+                <form th:if="${#httpServletRequest.requestURI != '/nowa_przebieg'}"
+                      action="#" th:action="@{'/nowy_przebieg/{carId}'(carId=${car.id})}" th:method="post">
+                    <input class="width-250 btn btn-success" type="submit" value="Dodaj przebieg"/>
+                </form>
+
+                <form th:if="${#httpServletRequest.requestURI != '/nowe_ubezpieczenie'}"
+                      action="#" th:action="@{'/nowe_ubezpieczenie/{carId}'(carId=${car.id})}" th:method="post">
+                    <input class="width-250 btn btn-success" type="submit" value="Dodaj ubezpieczenie"/>
+                </form>
+
+                <form th:if="${#httpServletRequest.requestURI != '/nowa_opona'}"
+                      action="#" th:action="@{'/nowa_opona/{carId}'(carId=${car.id})}" th:method="post">
+                    <input class="width-250 btn btn-success" type="submit" value="Dodaj opone"/>
+                </form>
+
+                <div th:replace="fragments/general.html :: editCar"/>
+
+            </div>
+
+            <div th:if="${#httpServletRequest.requestURI != '/dodaj_auto/' && #httpServletRequest.requestURI != '/dodaj_auto_kodem/' && #httpServletRequest.requestURI !='/carHistory'}" >
+                <form th:if="${#httpServletRequest.requestURI != '/dodaj_auto/'}"
+                      action="#" th:action="@{/dodaj_auto/}">
+                    <input class="width-250 btn btn-success" type="submit" value="Dodaj auto"/>
+                </form>
+
+                <form th:if="${#httpServletRequest.requestURI != '/dodaj_auto_kodem/'}"
+                      action="#" th:action="@{/dodaj_auto_kodem/}">
+                    <input class="width-250 btn btn-success" type="submit" value="Dodaj auto kodem"/>
+                </form>
+            </div>
+
+        </div>
+
+        <!--IF SERWIS PAGE HEAD SERWIS -->
+        <div th:if="${#httpServletRequest.requestURI == '/carHistory'}" class="inline"
+             sec:authorize="hasRole('ROLE_SERWIS')">
+
+            <div th:replace="fragments/general.html :: editCar"/>
+        </div>
+
+    </div>
+
+</div>
+
+<div th:if="${car != null}" class="inline" th:fragment="editCar">
+    <form th:if="${#httpServletRequest.requestURI != '/nowa_naprawa_serwisowa'}"
+          action="#" th:action="@{'/nowa_naprawa_serwisowa/{carId}'(carId=${car.id})}" th:method="post">
+        <input class="width-250 btn btn-success" type="submit" value="Dodaj naprawę serwisową"/>
+    </form>
+
+    <form th:if="${#httpServletRequest.requestURI != '/nowy_przeglad'}"
+          th:action="@{'/nowy_przeglad/{carId}'(carId=${car.id})}" th:method="post">
+        <input class="width-250 btn btn-success" type="submit" value="Dodaj przegląd"/>
+    </form>
+
+    <form th:if="${#httpServletRequest.requestURI != '/wymiana_opon'}"
+          th:action="@{'/wymiana_opon/{carId}'(carId=${car.id})}" th:method="post">
+        <input class="width-250 btn btn-success" type="submit" value="Wymiana opon"/>
+    </form>
+</div>
+
+</body>
+
+</html>

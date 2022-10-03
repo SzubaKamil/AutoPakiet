@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/general.html :: headfragment">
+<body>
+
+<div th:replace="fragments/general.html :: pageHeadByRole"/>
+
+<div th:if="${car == null}">
+    <h2 class="text-warning">Nie znalezion auta sprawdź poprawnść kodu!!!</h2>
+</div>
+
+<div th:unless="${car == null}">
+    <h3>DANE AUTA</h3>
+
+    <table>
+        <tr>
+            <th class="width-250">Marka:</th>
+            <th th:text="${car.producer}"></th>
+        </tr>
+
+        <tr>
+            <th class="width-250">Model:</th>
+            <th th:text="${car.model}"></th>
+        </tr>
+
+        <tr>
+            <th class="width-250">Rok produkcji:</th>
+            <th th:text="${car.year}"></th>
+        </tr>
+
+        <tr>
+            <th class="width-250">Rodzaj paliwa:</th>
+            <th th:text="${car.fuelType}"></th>
+        </tr>
+
+        <tr>
+            <th>Przebieg [km]:</th>
+            <th th:if="${not #lists.isEmpty(car.carMileages)}"
+                th:with="carMilage=${car.carMileages[#lists.size(car.carMileages) - 1]}"
+                th:text="${carMilage.value}"></th>
+            <th th:if="${#lists.isEmpty(car.carMileages)}">Brak danych</th>
+        </tr>
+
+        <tr>
+            <th>Data ważności przeglądu:</th>
+            <th th:if="${not #lists.isEmpty(car.carInspections)}"
+                th:with="carInspection=${car.carInspections[#lists.size(car.carInspections) - 1]}"
+                th:text="${carInspection.expirationDate}"></th>
+            <th th:if="${#lists.isEmpty(car.carInspections)}">Brak danych</th>
+        </tr>
+
+        <tr>
+            <th>Data ważności ubezpieczenia:</th>
+            <th th:if="${not #lists.isEmpty(car.insurances)}"
+                th:with="carInsurance=${car.insurances[#lists.size(car.insurances) - 1]}"
+                th:text="${carInsurance.endDate}"></th>
+            <th th:if="${#lists.isEmpty(car.insurances)}">Brak danych</th>
+        </tr>
+    </table>
+
+    <br>
+
+    <div th:if="${car.lpg !=null}">
+        <h3>Instacja gazowa:</h3>
+        <table>
+            <tr>
+                <th class="width-250">Ważność butli:</th>
+                <th th:text="${car.lpg.cylinderValidity}"></th>
+            </tr>
+            <tr>
+                <th>Rok założenia instalacji:</th>
+                <th th:text="${car.lpg.installationYear}"></th>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+
+    <h3>Historia serwisowa:</h3>
+    <table>
+        <div th:if="${not #lists.isEmpty(car.repairHistories)}">
+            <tr>
+                <th>Opis</th>
+                <th>Cena</th>
+                <th>Data</th>
+            </tr>
+
+            <th:block th:each="repairHistory : ${car.repairHistories}">
+                <tr>
+                    <th th:width="250" th:text="${repairHistory.serviceRepair.name}"></th>
+                    <th th:width="250" th:text="${repairHistory.serviceRepair.price}"></th>
+                    <th th:width="250" th:text="${repairHistory.date}"></th>
+                </tr>
+            </th:block>
+        </div>
+    </table>
+
+    <div class="inline" sec:authorize="hasRole('ROLE_USER')">
+        <br>
+        <h3>Historia ubezpieczenia:</h3>
+        <table>
+            <div th:if="${not #lists.isEmpty(car.insurances)}">
+                <tr>
+                    <th>Rodzaj ubezpieczenia</th>
+                    <th>Od dnia:</th>
+                    <th>Do dnia:</th>
+                    <th>Data podpisania umowy</th>
+                </tr>
+
+                <th:block th:each="insurance : ${car.insurances}">
+                    <tr>
+                        <th th:width="250" th:text="${insurance.type}"></th>
+                        <th th:width="250" th:text="${insurance.beginDate}"></th>
+                        <th th:width="250" th:text="${insurance.endDate}"></th>
+                        <th th:width="250" th:text="${insurance.signDate}"></th>
+                    </tr>
+                </th:block>
+            </div>
+        </table>
+
+        <br>
+        <h3>Historia przeglądów:</h3>
+        <table>
+            <div th:if="${not #lists.isEmpty(car.carInspections)}">
+                <tr>
+                    <th>Data wykonania</th>
+                    <th>Wynik</th>
+                    <th>Przebieg</th>
+                    <th>Termin ważności</th>
+                </tr>
+
+                <th:block th:each="inspection : ${car.carInspections}">
+                    <tr>
+                        <th th:width="250" th:text="${inspection.carMileage.date}"></th>
+                        <th th:width="250" th:text="${inspection.result}"></th>
+                        <th th:width="250" th:text="${inspection.carMileage.value}"></th>
+                        <th th:width="250" th:text="${inspection.expirationDate}"></th>
+                    </tr>
+                </th:block>
+            </div>
+        </table>
+
+        <br>
+        <h3>Historia przebiegu:</h3>
+        <table>
+            <div th:if="${not #lists.isEmpty(car.carMileages)}">
+                <tr>
+                    <th>Data wykonania</th>
+                    <th>Przebieg</th>
+                </tr>
+
+                <th:block th:each="mileage : ${car.carMileages}">
+                    <tr>
+                        <th th:width="250" th:text="${mileage.date}"></th>
+                        <th th:width="250" th:text="${mileage.value}"></th>
+                    </tr>
+                </th:block>
+            </div>
+        </table>
+    </div>
+</div>
+
+
+
+</body>
+</html>
