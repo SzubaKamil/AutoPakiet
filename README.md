@@ -1,6 +1,6 @@
 # AutoPakiet
-- <a href="link">Database design</a>
-- <a href="link">Frontend screen</a>
+- <a href="https://github.com/SzubaKamil/AutoPakiet/blob/main/databae_script/model_DB_02.pdf">Database design</a>
+- <a href="https://github.com/SzubaKamil/AutoPakiet/blob/main/screen.png">Frontend screen</a>
 # 
 # Basic Overview:
 
