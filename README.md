@@ -15,7 +15,7 @@ Car history: repairs, tires, mileages, service history, car inspections, insuran
     - ADMIN: new service account, new service type, check car history
     - SERVICE: check car history, change tires, add car inspections, add car repairs
     - USER: My cars, add car, add car by code, ADD: mileages, car inspections, car insurances, repairs, change tires, generate sales code
-    - NO LEGGED USERS: login, registration
+    - NO LOGGED USERS: login, registration
 - Supports many users
 - Send notification by email when car insurance or inspection is expired 
 - When user sell car can generate "sales code". 
